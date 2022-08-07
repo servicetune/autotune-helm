@@ -1,0 +1,13 @@
+
+
+grafana:
+  datasources: 
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+      - name: Prometheus
+        type: prometheus
+        url: "http://infra-dog-prometheus-server.infra.svc.cluster.local:80"
+        access: proxy
+        isDefault: true
+

@@ -1,0 +1,12 @@
+{
+  "name": "infrastructure",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "infra:deps":"helm dependency update ./infrastructure ",
+    "infra:lint":"helm lint ./infrastructure --values ./infrastructure/values.yaml",
+    "infra:deploy":"helm upgrade infra-dog ./infrastructure --values ./infrastructure/values.yaml --namespace=infra"
+  },
+  "author": "",
+  "license": "ISC"
+}
