@@ -5,10 +5,10 @@
 replicaCount: 1
 
 image:
-  repository: puki-hub/load-rest-api
+  repository: localhost:5000/loadstubrestdotnet
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "latest"
 
 imagePullSecrets: []
 nameOverride: ""
