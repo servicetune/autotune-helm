@@ -1,0 +1,14 @@
+{
+  "name": "infrastructure",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "infra:deps":"helm dependency update ./dev/infrastructure ",
+    "infra:lint":"helm lint ./dev/infrastructure --values ./dev/infrastructure/values.yaml",
+    "infra:deploy":"helm upgrade infra-dog ./dev/infrastructure --values ./dev/infrastructure/values.yaml --namespace=infra --create-namespace -i",
+    "deploy": "yarn infra:deploy",
+    "stub:deploy":"helm upgrade stub-cow ./dev/load-rest-api --values ./dev/load-rest-api/values.yaml --namespace=stub1 --create-namespace -i"
+  },
+  "author": "",
+  "license": "ISC"
+}

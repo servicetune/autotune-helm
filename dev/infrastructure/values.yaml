@@ -1,0 +1,154 @@
+global:
+  storageClass: managed-premium
+
+grafana:
+  enabled: true
+  fullnameOverride: 'grafana'
+  operator:
+    nodeSelector:
+      kubernetes.io/os: linux
+      agentpool: agentpool
+  grafana:
+    service:
+      type: LoadBalancer
+    nodeSelector:
+      kubernetes.io/os: linux
+      agentpool: infrapool
+    tolerations:
+      - key: kubernetes.azure.com/scalesetpriority
+        value: "spot"
+        effect: "NoSchedule"
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+      - name: Prometheus
+        type: prometheus
+        url: "http://infra-dog-prometheus-server.infra.svc.cluster.local:80"
+        access: proxy
+        isDefault: true
+      - name: Loki
+        type: loki
+        access: proxy
+        url: http://infra-dog-kube-loki-loki.infra:3100/api/v1/query
+        isDefault: false
+        version: 1
+
+loki:
+  enabled: true
+  fullnameOverride: 'loki'
+  nodeSelector:
+    kubernetes.io/os: linux
+    agentpool: infrapool
+  tolerations:
+    - key: kubernetes.azure.com/scalesetpriority
+      value: "spot"
+      effect: "NoSchedule"
+  distributor:
+    nodeSelector:
+      kubernetes.io/os: linux
+      agentpool: infrapool
+    tolerations:
+      - key: kubernetes.azure.com/scalesetpriority
+        value: "spot"
+        effect: "NoSchedule"
+  memcachedfrontend:
+    fullnameOverride: 'loki-memcachedfrontend'
+    nodeSelector:
+      kubernetes.io/os: linux
+      agentpool: infrapool
+    tolerations:
+      - key: kubernetes.azure.com/scalesetpriority
+        value: "spot"
+        effect: "NoSchedule"
+  memcachedindexqueries:
+    fullnameOverride: 'loki-memcachedindexqueries'
+    nodeSelector:
+      kubernetes.io/os: linux
+      agentpool: infrapool
+    tolerations:
+      - key: kubernetes.azure.com/scalesetpriority
+        value: "spot"
+        effect: "NoSchedule"  
+  ingester:
+    fullnameOverride: 'loki-ingester'
+    nodeSelector:
+      kubernetes.io/os: linux
+      agentpool: infrapool
+    tolerations:
+      - key: kubernetes.azure.com/scalesetpriority
+        value: "spot"
+        effect: "NoSchedule"
+  queryFrontend:
+    fullnameOverride: 'loki-query-frontend'
+    nodeSelector:
+      kubernetes.io/os: linux
+      agentpool: infrapool
+    tolerations:
+      - key: kubernetes.azure.com/scalesetpriority
+        value: "spot"
+        effect: "NoSchedule"
+  querier:
+    fullnameOverride: 'loki-querier'
+    nodeSelector:
+      kubernetes.io/os: linux
+      agentpool: infrapool
+    tolerations:
+      - key: kubernetes.azure.com/scalesetpriority
+        value: "spot"
+        effect: "NoSchedule"
+  gateway:
+    fullnameOverride: 'loki-gateway'
+    nodeSelector:
+      kubernetes.io/os: linux
+      agentpool: infrapool
+    tolerations:
+      - key: kubernetes.azure.com/scalesetpriority
+        value: "spot"
+        effect: "NoSchedule"
+  compactor:
+    fullnameOverride: 'loki-compactor'
+    nodeSelector:
+      kubernetes.io/os: linux
+      agentpool: infrapool
+    tolerations:
+      - key: kubernetes.azure.com/scalesetpriority
+        value: "spot"
+        effect: "NoSchedule"
+  promtail:
+    fullnameOverride: 'loki-promtail'
+    tolerations:
+      - key: kubernetes.azure.com/scalesetpriority
+        value: "spot"
+        effect: "NoSchedule"
+
+prometheus:
+  enabled: true
+  fullnameOverride: prometheus
+  namespace: infra
+  operator:
+    nameOverride: operator
+    nodeSelector:
+      kubernetes.io/os: linux
+      agentpool: agentpool
+  node-exporter:
+    fullnameOverride: prometheus-node-exporter
+    tolerations:
+      - key: kubernetes.azure.com/scalesetpriority
+        value: "spot"
+        effect: "NoSchedule"
+  alertmanager:
+    fullnameOverride: prometheus-alertmanager
+  blackboxExporter:
+    enabled: false
+  prometheus:
+    fullnameOverride: prometheus
+    nodeSelector:
+      kubernetes.io/os: linux
+      agentpool: infrapool
+    tolerations:
+      - key: kubernetes.azure.com/scalesetpriority
+        value: "spot"
+        effect: "NoSchedule"
+    persistence:
+      storageClass: managed-premium
